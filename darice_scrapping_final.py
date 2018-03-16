@@ -88,8 +88,7 @@ class Parsing():
 
     def get_url(self, url):
         try:
-            headers = {"Connection" : "close",'User-Agent':'Opera/9.80 \
-                       (Windows NT 5.2; U; ru) Presto/2.7.62 Version/11.01'}
+            headers = {"Connection" : "close",'User-Agent':'Opera/9.80 (Windows NT 5.2; U; ru) Presto/2.7.62 Version/11.01'}
             root = requests.get(url, headers=headers)
             global tree
             tree = html.fromstring(root.content)
