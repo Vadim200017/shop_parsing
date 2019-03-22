@@ -6,6 +6,7 @@ from lxml import html
 import pickle
 import pandas as pd
 
+
 class Parsing():
     
     def __init__(self):
@@ -58,7 +59,8 @@ class Parsing():
         try:
             self.get_url(url)
             category = [n.get('href') 
-                        for n in tree.xpath('//div[@class="containerMargin10"]/ul/li/ul/li/a') 
+                        for n in 
+                        tree.xpath('//div[@class="containerMargin10"]/ul/li/ul/li/a') 
                         if '/catalog/' in n.get('href')]  
             for url in category:
                 print (url)
@@ -88,7 +90,9 @@ class Parsing():
 
     def get_url(self, url):
         try:
-            headers = {"Connection" : "close",'User-Agent':'Opera/9.80 (Windows NT 5.2; U; ru) Presto/2.7.62 Version/11.01'}
+            headers = {
+                        "Connection" : "close",
+                        'User-Agent':'Opera/9.80 (Windows NT 5.2; U; ru) Presto/2.7.62 Version/11.01'}
             root = requests.get(url, headers=headers)
             global tree
             tree = html.fromstring(root.content)
@@ -163,11 +167,15 @@ def main():
         print ('{} links have been found'.format(count))
 
     fields = {
-               'Item #':new.items, 'UPC #':new.upcs,
-               'Your Price': new.prices, 'Case Pack': new.casepacks,
-               'Inner Pack': new.innerpacks, 'In Stock': new.instocks,
-               'Color': new.colors, 'Shape': new.shapes
-                  }
+               'Item #':new.items, 
+               'UPC #':new.upcs,
+               'Your Price': new.prices, 
+               'Case Pack': new.casepacks,
+               'Inner Pack': new.innerpacks, 
+               'In Stock': new.instocks,
+               'Color': new.colors, 
+               'Shape': new.shapes
+              }
 
     count = 0
     for url in new.all_links: 
@@ -181,7 +189,9 @@ def main():
         count+=1
         print("{} links out of {} have been scrapped ".format(count,len(new.all_links)))
 
-    df = pd.DataFrame({"item": new.items,
+    df = pd.DataFrame(
+                      {
+                       "item": new.items,
                        "main_image":new.main_images,
                        "product_name": new.names,
                        "upc": new.upcs,
@@ -192,11 +202,21 @@ def main():
                        "color": new.colors,
                        "shape": new.shapes, 
                        "description": new.description
-                           },
-                       columns=["item","product_name",
-                       "main_image", "upc","price", 
-                       "case_pack", "inner_pack", "in_stock", 
-                       "color", "shape","description"])
+                        },
+                       columns=[
+                                "item",
+                                "product_name",
+                                "main_image", 
+                                "upc",
+                                "price", 
+                                "case_pack", 
+                                "inner_pack", 
+                                "in_stock", 
+                                "color", 
+                                "shape",
+                                "description"
+                               ]
+                          )
 
     df.to_csv('darice_all.csv', encoding='utf-8', index=False)
 
